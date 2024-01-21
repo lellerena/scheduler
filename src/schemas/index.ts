@@ -1,2 +1,2 @@
 export * from './auth.schemas'
-export * from './stores.schemas'
+export * from './schedule.schemas'

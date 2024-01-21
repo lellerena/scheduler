@@ -9,14 +9,14 @@ import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 
 import { ScheduleColumn, columns } from './columns'
+import { useNewScheduleModal } from '@/hooks/use-new-schedule-store'
 
 interface SchedulesClientProps {
     data: ScheduleColumn[]
 }
 
 export const SchedulesClient: React.FC<SchedulesClientProps> = ({ data }) => {
-    const params = useParams()
-    const router = useRouter()
+    const { onOpen } = useNewScheduleModal()
 
     return (
         <>
@@ -26,11 +26,7 @@ export const SchedulesClient: React.FC<SchedulesClientProps> = ({ data }) => {
                     description="Manage Your Schedules"
                 />
                 <div className="flex">
-                    <Button
-                        onClick={() =>
-                            router.push(`/${params.storeId}/Schedules/new`)
-                        }
-                    >
+                    <Button onClick={() => onOpen()}>
                         <Plus className="mr-2 h-4 w-4" /> Add New
                     </Button>
                 </div>
