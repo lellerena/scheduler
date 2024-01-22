@@ -12,6 +12,7 @@ import { useState, useTransition } from 'react'
 import { register } from '@/actions/auth/register'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
+import { SignButton } from '@/components/SignButton'
 
 export default function SignUpPage() {
     const [error, setError] = useState<string | undefined>('')
@@ -51,26 +52,7 @@ export default function SignUpPage() {
                     </p>
                 </div>
                 <div className="flex justify-between mt-4">
-                    <Button className="w-40 bg-blue-600 text-white p-2 rounded-md">
-                        <div className="flex items-center justify-center">
-                            <img
-                                alt="Google"
-                                className="h-5 w-5 mr-2"
-                                src="/placeholder.svg"
-                            />
-                            Google
-                        </div>
-                    </Button>
-                    <Button className="w-40 bg-black text-white p-2 rounded-md">
-                        <div className="flex items-center justify-center">
-                            <img
-                                alt="GitHub"
-                                className="h-5 w-5 mr-2"
-                                src="/placeholder.svg"
-                            />
-                            GitHub
-                        </div>
-                    </Button>
+                    <SignButton source="google" />
                 </div>
                 <div className="divide-y divide-gray-200 mt-6">
                     <Form {...form}>
