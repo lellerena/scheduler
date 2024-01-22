@@ -2,12 +2,14 @@
 
 import * as z from 'zod'
 
-import { newScheduleSchema } from '@/schemas'
+import { newScheduleUnLoginSchema } from '@/schemas'
 const Login_URL =
     'https://e3pc8k5p2g.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/login'
 
-export const unLogin = async (values: z.infer<typeof newScheduleSchema>) => {
-    const validatedFields = newScheduleSchema.safeParse(values)
+export const unLogin = async (
+    values: z.infer<typeof newScheduleUnLoginSchema>
+) => {
+    const validatedFields = newScheduleUnLoginSchema.safeParse(values)
 
     if (!validatedFields.success) {
         return { error: 'Invalid fields!' }

@@ -103,20 +103,9 @@ model Schedule{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  scheduleByHours scheduleByHours[]
+  scheduleByHours Json
 
   @@unique([userId, name])
 }
 
 
-model scheduleByHours{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  scheduleId String @db.ObjectId
-  schedule Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
-  data Json
-  subjectsByDays  Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([scheduleId])
-}
