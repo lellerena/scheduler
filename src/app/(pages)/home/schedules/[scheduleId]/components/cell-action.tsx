@@ -15,10 +15,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { AlertModal } from '@/components/modals/alert-modal'
 
-import { ScheduleColumn } from './columns'
+import { ScheduleIdColumn } from './columns'
 
 interface CellActionProps {
-    data: ScheduleColumn
+    data: ScheduleIdColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {

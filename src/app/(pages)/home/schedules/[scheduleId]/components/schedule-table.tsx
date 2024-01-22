@@ -27,13 +27,14 @@ interface DataTableProps<TData, TValue> {
     pageSize?: number
 }
 
-export function DataTable<TData, TValue>({
+export function ScheduleTable<TData, TValue>({
     columns,
     data,
     searchKey,
-    pageSize = 10
+    pageSize = 15
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [isMounted, setIsMounted] = useState(false)
     const table = useReactTable({
         data,
         columns,
@@ -47,8 +48,14 @@ export function DataTable<TData, TValue>({
     })
 
     useEffect(() => {
+        setIsMounted(true)
         table.setPageSize(pageSize)
     }, [pageSize, table])
+
+    if (!isMounted) {
+        return null
+    }
+
     return (
         <div>
             <div className="rounded-md border">

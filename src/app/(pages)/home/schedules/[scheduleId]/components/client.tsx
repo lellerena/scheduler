@@ -4,25 +4,23 @@ import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
-import { DataTable } from './data-table'
+import { ScheduleTable } from './schedule-table'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 
-import { ScheduleColumn, columns } from './columns'
+import { ScheduleIdColumn, columns } from './columns'
 import { schedule } from '@/data/schedules/schedules'
+import { Schedule } from '@prisma/client'
 
 interface ScheduleClientProps {
-    data: schedule
-    tableData: ScheduleColumn[]
+    data: Schedule
+    tableData: ScheduleIdColumn[]
 }
 
 export const ScheduleIdClient: React.FC<ScheduleClientProps> = ({
     data,
     tableData
 }) => {
-    const params = useParams()
-    const router = useRouter()
-
     return (
         <>
             <div className="flex items-center justify-between">
@@ -37,7 +35,7 @@ export const ScheduleIdClient: React.FC<ScheduleClientProps> = ({
                 </div>
             </div>
             <Separator />
-            <DataTable
+            <ScheduleTable
                 searchKey="name"
                 columns={columns}
                 data={tableData}

@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form'
 import { useNewScheduleModal } from '@/hooks/use-new-schedule-store'
 import { Button } from '@/components/ui/button'
-import { newScheduleSchema } from '@/schemas'
+import { newScheduleUnLoginSchema } from '@/schemas'
 import { unLogin } from '@/actions/uninorte/unLogin'
 
 export default function LoginForm() {
@@ -27,8 +27,8 @@ export default function LoginForm() {
     const [loading, setLoading] = useState(false)
     const storeModal = useNewScheduleModal()
 
-    const form = useForm<z.infer<typeof newScheduleSchema>>({
-        resolver: zodResolver(newScheduleSchema),
+    const form = useForm<z.infer<typeof newScheduleUnLoginSchema>>({
+        resolver: zodResolver(newScheduleUnLoginSchema),
         defaultValues: {
             username: '',
             password: ''
@@ -43,7 +43,9 @@ export default function LoginForm() {
         return null
     }
 
-    const onSubmit = async (values: z.infer<typeof newScheduleSchema>) => {
+    const onSubmit = async (
+        values: z.infer<typeof newScheduleUnLoginSchema>
+    ) => {
         try {
             setLoading(true)
             // delay

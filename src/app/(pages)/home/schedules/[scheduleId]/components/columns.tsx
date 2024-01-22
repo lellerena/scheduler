@@ -1,21 +1,25 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { days } from '../page'
 import { Subject } from '@/data/schedules/schedules'
+import { days } from '@/lib/schedule.constants'
 
-export type ScheduleColumn = {
+export type ScheduleIdColumn = {
     id: string
     hour: string
 } & { [K in (typeof days)[number]]: Subject }
 
-export const columns: ColumnDef<ScheduleColumn>[] = [
+export const columns: ColumnDef<ScheduleIdColumn>[] = [
     {
         header: 'Hora',
         accessorKey: 'hour',
         id: 'hour',
         cell: ({ row: { original } }) => {
-            return <div className="text-center p-1">{original.hour}</div>
+            return (
+                <div className="text-center p-1">
+                    {original.hour}-{parseInt(original.hour) + 1}:30
+                </div>
+            )
         }
     },
     ...days.map((day) => ({
@@ -25,7 +29,7 @@ export const columns: ColumnDef<ScheduleColumn>[] = [
         cell: ({
             row: { original }
         }: {
-            row: { original: ScheduleColumn }
+            row: { original: ScheduleIdColumn }
         }) => {
             if (!original[day]) return <div></div>
             return (
