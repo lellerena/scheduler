@@ -6,6 +6,7 @@ import { LayoutGridIcon } from '@/components/ui/icons/LayoutGridIcon'
 import { ShareIcon } from '@/components/ui/icons/ShareIcon'
 import { CalendarIcon } from '@/components/ui/icons/CalendarIcon'
 import { GroupIcon, SettingsIcon } from 'lucide-react'
+import ImporScheduleButton from '@/components/import-schedule-button'
 
 export default function HomePage() {
     return (
@@ -53,7 +54,9 @@ export default function HomePage() {
                                 Import your schedules directly from the Uninorte
                                 university page.
                             </p>
-                            <Button className="mt-2">Import Now</Button>
+                            <div className="mt-2">
+                                <ImporScheduleButton withIcon={false} />
+                            </div>
                         </CardContent>
                     </Card>
 
@@ -69,7 +72,9 @@ export default function HomePage() {
                                 Manage your schedules and keep track of your
                                 tasks.
                             </p>
-                            <Button className="mt-2">Manage Now</Button>
+                            <Link href={'/home/schedules'}>
+                                <Button className="mt-2">Manage Now</Button>
+                            </Link>
                         </CardContent>
                     </Card>
                     <Card>
