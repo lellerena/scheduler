@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { Button } from '../ui/button'
 import { ThemeToggle } from '../theme-toggle'
 import { UserButton } from '../user-button'
 
 const links = [
+    { to: '/home', label: 'Home' },
     { to: '/home/schedules', label: 'My Schedules' },
+    { to: '/home/friends', label: 'My Friends' },
     { to: '/home/groups', label: 'Friends Groups' },
     { to: '/home/settings', label: 'Settings' }
 ]
