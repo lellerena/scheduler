@@ -5,11 +5,11 @@ import { useNewScheduleModal } from '@/hooks/use-new-schedule-store'
 
 export default async function page() {
     const userId = (await currentUser()).id
-    const draft = await getDraftByUserId(userId)
+    const draft = (await getDraftByUserId(userId)) || ([] as any)
 
     return (
         <div>
-            <NewSchedule schedule={draft} />
+            <NewSchedule schedule={draft.content} />
         </div>
     )
 }

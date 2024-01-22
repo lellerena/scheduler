@@ -3,14 +3,36 @@
 import path from 'path'
 import fs from 'fs/promises'
 import { redirect } from 'next/navigation'
+import { db } from '@/lib/db'
 
 const files_path = './src/actions/draft/files'
 
 export const writeDraft = async (content: string, userId: string) => {
     console.log(`Writing draft for user ${userId}`)
     try {
-        const filePath = path.join(files_path, `${userId}.json`)
-        await fs.writeFile(filePath, content)
+        const existingDraft = await db.draft.findUnique({
+            where: {
+                userId: userId
+            }
+        })
+
+        if (existingDraft) {
+            await db.draft.update({
+                where: {
+                    userId: userId
+                },
+                data: {
+                    content: content
+                }
+            })
+        } else {
+            await db.draft.create({
+                data: {
+                    userId: userId,
+                    content: content
+                }
+            })
+        }
         return { success: 'Draft written' }
     } catch (err) {
         console.log(err)
@@ -22,8 +44,11 @@ const draftError = 'Error writing draft'
 
 export const getDraftByUserId = async (userId: string) => {
     try {
-        const filePath = path.join(files_path, `${userId}.json`)
-        const draft = await fs.readFile(filePath, 'utf-8')
+        const draft = await db.draft.findUnique({
+            where: {
+                userId: userId
+            }
+        })
 
         return draft
     } catch (err) {
@@ -34,6 +59,15 @@ export const getDraftByUserId = async (userId: string) => {
 }
 
 export const deleteDraft = async (userId: string) => {
-    const filePath = path.join(files_path, `${userId}.json`)
-    return await fs.unlink(filePath)
+    try {
+        await db.draft.delete({
+            where: {
+                userId: userId
+            }
+        })
+        return { success: 'Draft deleted' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error deleting draft' }
+    }
 }
