@@ -12,7 +12,7 @@ export default async function Navbar() {
     return (
         <>
             <header className="px-4 lg:px-6 h-14 flex items-center">
-                <Link className="flex items-center justify-center" href="#">
+                <Link className="flex items-center justify-center" href="/">
                     <CalendarIcon className="size-7" />
                     <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                         Scheduler
