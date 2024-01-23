@@ -10,6 +10,13 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
         where: {
             id: {
                 not: userId
+            },
+            NOT: {
+                FriendshipRequest: {
+                    some: {
+                        userId: userId
+                    }
+                }
             }
         },
         take,
