@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ThemeToggle } from '../theme-toggle'
 import { UserButton } from '../user-button'
+import SearchBar from './searchBar'
 
 const links = [
     { to: '/home', label: 'Home' },
@@ -25,6 +26,7 @@ export default function Authorized() {
                 ))}
             </nav>
             <div className="ml-auto flex gsp-4 sm:gap-6 items-center">
+                <SearchBar />
                 <ThemeToggle />
                 <UserButton />
             </div>
