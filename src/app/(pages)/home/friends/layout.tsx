@@ -15,13 +15,15 @@ interface LayoutProps {
     searchUsers: React.ReactNode
     yourFriends: React.ReactNode
     friendRequests: React.ReactNode
+    sentFriendRequests: React.ReactNode
 }
 
 export default function Layout({
     children,
     searchUsers,
     yourFriends,
-    friendRequests
+    friendRequests,
+    sentFriendRequests
 }: LayoutProps) {
     return (
         <>
@@ -109,9 +111,10 @@ export default function Layout({
                         </div>
                     </header>
                     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-y-auto">
-                        {searchUsers}
                         {yourFriends}
                         {friendRequests}
+                        {searchUsers}
+                        {sentFriendRequests}
                     </main>
                 </div>
             </div>

@@ -2,7 +2,10 @@
 
 import { sendFriendRequest } from '@/actions/uninorte/friends'
 import { Button } from '@/components/ui/button'
+import { useOrigin } from '@/hooks/use-origin'
 import { UserPlusIcon } from 'lucide-react'
+import { revalidatePath } from 'next/cache'
+import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -16,6 +19,7 @@ export default function AddFriendButton({
     destinationId
 }: AddFriendButtonProps) {
     const [loading, setLoading] = useState(false)
+    const path = usePathname()
 
     const handleClik = useCallback(async () => {
         try {
@@ -26,11 +30,12 @@ export default function AddFriendButton({
                 throw new Error(res.error || 'Error, please try again later.')
             }
             toast.success(res.success!)
+            revalidatePath(path)
         } catch (error) {
         } finally {
             setLoading(false)
         }
-    }, [destinationId, originId])
+    }, [destinationId, originId, path])
 
     return (
         <div className="flex justify-end mt-2">

@@ -12,11 +12,29 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
                 not: userId
             },
             NOT: {
-                FriendshipRequest: {
-                    some: {
-                        userId: userId
+                OR: [
+                    {
+                        FriendshipRequest: {
+                            some: {
+                                userId: userId
+                            }
+                        }
+                    },
+                    {
+                        Friendship: {
+                            some: {
+                                OR: [
+                                    {
+                                        userId: userId
+                                    },
+                                    {
+                                        friendId: userId
+                                    }
+                                ]
+                            }
+                        }
                     }
-                }
+                ]
             }
         },
         take,
