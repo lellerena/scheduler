@@ -10,42 +10,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum UserRole {
   ADMIN
   USER
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole @default(USER)
-  accounts      Account[]
-  schedules     Schedule[]
-  drafts        Draft[]
-  isTwoFactorEnabled Boolean @default(false)
+  id             String              @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String              @unique
+  emailVerified  DateTime?
+  image          String?
+  password       String?
+  role           UserRole            @default(USER)
+  accounts       Account[]
+  schedules      Schedule[]
+  drafts         Draft[]
+  friends        Friendship[]        @relation(name: "friendWith")
+  friendRequests FriendshipRequest[] @relation(name: "friendRequestFrom")
+
+  isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  Friendship            Friendship[]
+  FriendshipRequest     FriendshipRequest[]
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String @db.ObjectId 
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String?  
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? 
-  session_state      String?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -53,27 +57,27 @@ model Account {
 }
 
 model VerificationToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model TwoFactorToken {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  token String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
@@ -83,38 +87,61 @@ model TwoFactorConfirmation {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
 }
-
 
 enum ScheduleVisibility {
   PUBLIC
   PRIVATE
 }
 
-model Schedule{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name String
-  period String
+model Schedule {
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String             @db.ObjectId
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  period     String
   visibility ScheduleVisibility @default(PRIVATE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
 
   scheduleByHours Json
 
   @@unique([userId, name])
 }
 
+model Draft {
+  userId  String @db.ObjectId
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  content Json
 
-model Draft{
-	userId String @db.ObjectId
-  	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  	id String @id @default(auto()) @map("_id") @db.ObjectId
-  	content Json
+  @@unique([userId])
+}
 
-	@@unique([userId])
+// implement friendships
+model Friendship {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  friendId  String   @db.ObjectId
+  friend    User     @relation(name: "friendWith", fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
+}
+
+model FriendshipRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(name: "friendRequestFrom", fields: [userId], references: [id], onDelete: Cascade)
+  friendId  String   @db.ObjectId
+  friend    User     @relation(fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
 }
