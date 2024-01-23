@@ -1,15 +1,15 @@
 import React from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { UserPlusIcon } from 'lucide-react'
-import { User } from '@prisma/client'
+
 import { UserType } from '@/data/users/users'
+import AddFriendButton from '../../components/addFriendButton'
 
 interface UserCardProps {
     user: UserType
+    originId: string
 }
 
-export const UserCard = ({ user }: UserCardProps) => {
+export const UserCard = ({ user, originId }: UserCardProps) => {
     if (!user || user == null) return null
 
     return (
@@ -24,12 +24,7 @@ export const UserCard = ({ user }: UserCardProps) => {
                     <div className="line-clamp-1 text-xs">{user.email}</div>
                 </div>
             </div>
-            <div className="flex justify-end mt-2">
-                <Button size="sm" className="flex gap-2">
-                    <UserPlusIcon className="h-4 w-4" />
-                    Add Friend
-                </Button>
-            </div>
+            <AddFriendButton originId={originId} destinationId={user.id} />
         </div>
     )
 }

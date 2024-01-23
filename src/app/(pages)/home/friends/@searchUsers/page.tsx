@@ -29,9 +29,18 @@ export default async function SearchUsersFragment() {
             <SubSection>
                 <SectionSubtitle>Suggested Users</SectionSubtitle>
                 <SectionGrid>
-                    {sugestions.map((user) => (
-                        <UserCard key={user.id} user={user} />
+                    {sugestions.map((suggestedUser) => (
+                        <UserCard
+                            originId={user.id}
+                            key={suggestedUser.id}
+                            user={suggestedUser}
+                        />
                     ))}
+                    {sugestions.length == 0 && (
+                        <div className="text-center col-span-full ">
+                            No users found...
+                        </div>
+                    )}
                 </SectionGrid>
             </SubSection>
         </Section>

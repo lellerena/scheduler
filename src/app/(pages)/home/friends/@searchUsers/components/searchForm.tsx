@@ -43,18 +43,24 @@ export function Searchform() {
             <div className="absolute  top-[23px] right-5 ">
                 <SearchBar loading={loading} onSubmit={onSubmit} />
             </div>
-            {hasSearched && (
+            <SectionSubtitle>Search Results</SectionSubtitle>
+            {hasSearched ? (
                 <>
-                    <SectionSubtitle>Search Results</SectionSubtitle>
                     <SectionGrid>
                         {search.map((user) => (
-                            <UserCard key={user.id} user={user} />
+                            <UserCard
+                                originId={userId!}
+                                key={user.id}
+                                user={user}
+                            />
                         ))}
                         {search.length == 0 && (
                             <p className="text-center">No results found</p>
                         )}
                     </SectionGrid>
                 </>
+            ) : (
+                <p className="text-center">Search for a user...</p>
             )}
         </>
     )
