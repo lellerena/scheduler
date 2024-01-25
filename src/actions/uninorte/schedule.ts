@@ -165,3 +165,43 @@ export const deleteSchedule = async (scheduleId: string) => {
         return { error: 'Error deleting schedule!' }
     }
 }
+
+export const makeScheduleCurrent = async (scheduleId: string) => {
+    try {
+        const schedule = await db.schedule.findUnique({
+            where: {
+                id: scheduleId
+            }
+        })
+
+        if (!schedule) {
+            return { error: 'Schedule not found!' }
+        }
+
+        if (schedule.current) return { error: 'Schedule is already current!' }
+
+        await db.schedule.updateMany({
+            where: {
+                userId: schedule.userId
+            },
+            data: {
+                current: false
+            }
+        })
+
+        await db.schedule.update({
+            where: {
+                id: scheduleId
+            },
+            data: {
+                current: true
+            }
+        })
+
+        revalidatePath('/home/schedules')
+        return { success: 'Schedule updated!' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error updating schedule!' }
+    }
+}

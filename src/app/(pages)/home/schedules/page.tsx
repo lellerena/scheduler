@@ -14,7 +14,8 @@ const MySchedulesPage = async ({ params }: { params: { storeId: string } }) => {
             id: item.id,
             name: item.name,
             visibility: item.visibility,
-            period: item.period
+            period: item.period,
+            current: item.current
         }
     })
 

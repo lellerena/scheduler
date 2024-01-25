@@ -17,6 +17,10 @@ import { AlertModal } from '@/components/modals/alert-modal'
 
 import { ScheduleColumn } from './columns'
 import Link from 'next/link'
+import {
+    deleteSchedule,
+    makeScheduleCurrent
+} from '@/actions/uninorte/schedule'
 
 interface CellActionProps {
     data: ScheduleColumn
@@ -24,19 +28,18 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     const router = useRouter()
-    const params = useParams()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const onConfirm = async () => {
         try {
             setLoading(true)
-            // await deleteCategory(data.id, params.storeId as string)
+            await deleteSchedule(data.id)
             toast.success('Schedule deleted.')
             router.refresh()
         } catch (error) {
             toast.error(
-                'Make sure you removed all products using this category first.'
+                'An error occurred while deleting the schedule. Please try again.'
             )
         } finally {
             setOpen(false)
@@ -47,6 +50,22 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
         toast.success('Schedule ID copied to clipboard.')
+    }
+
+    const onMakeCurrent = async (id: string) => {
+        try {
+            setLoading(true)
+            await makeScheduleCurrent(id)
+            toast.success('Schedule set as current.')
+            router.refresh()
+        } catch (error) {
+            toast.error(
+                'An error occurred while setting the schedule as current. Please try again.'
+            )
+        } finally {
+            setOpen(false)
+            setLoading(false)
+        }
     }
 
     return (
@@ -76,15 +95,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                     <DropdownMenuItem onClick={() => onCopy(data.id)}>
                         <Copy className="mr-2 h-4 w-4" /> Copy Id
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                        onClick={() =>
-                            router.push(
-                                `/${params.storeId}/categories/${data.id}`
-                            )
-                        }
-                    >
-                        <Edit className="mr-2 h-4 w-4" /> Update
+
+                    <DropdownMenuItem onClick={() => onMakeCurrent(data.id)}>
+                        <Edit className="mr-2 h-4 w-4" /> Make Current
                     </DropdownMenuItem>
+
                     <DropdownMenuItem onClick={() => setOpen(true)}>
                         <Trash className="mr-2 h-4 w-4" /> Delete
                     </DropdownMenuItem>

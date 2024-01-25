@@ -9,6 +9,7 @@ export type ScheduleColumn = {
     name: string
     visibility: string
     period: string
+    current: boolean
 }
 
 export const columns: ColumnDef<ScheduleColumn>[] = [
@@ -23,6 +24,10 @@ export const columns: ColumnDef<ScheduleColumn>[] = [
     {
         accessorKey: 'visibility',
         header: 'Visibility'
+    },
+    {
+        accessorKey: 'current',
+        header: 'Current'
     },
     {
         id: 'actions',
