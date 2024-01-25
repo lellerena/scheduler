@@ -95,13 +95,20 @@ export const createSchedule = async (
     const { name, period, visibility, userId } = validatedFields.data
 
     try {
+        const userSchedulesCount = await db.schedule.count({
+            where: {
+                userId
+            }
+        })
+
         const schedule = await db.schedule.create({
             data: {
                 name,
                 period,
                 visibility: visibility as ScheduleVisibility,
                 userId,
-                scheduleByHours: data as any
+                scheduleByHours: data as any,
+                current: userSchedulesCount === 0
             }
         })
 
@@ -116,11 +123,40 @@ export const createSchedule = async (
 
 export const deleteSchedule = async (scheduleId: string) => {
     try {
+        const schedule = await db.schedule.findUnique({
+            where: {
+                id: scheduleId
+            }
+        })
+
+        if (!schedule) {
+            return { error: 'Schedule not found!' }
+        }
+
         await db.schedule.delete({
             where: {
                 id: scheduleId
             }
         })
+
+        if (schedule.current) {
+            const newCurrentSchedule = await db.schedule.findFirst({
+                where: {
+                    userId: schedule.userId
+                }
+            })
+
+            if (newCurrentSchedule) {
+                await db.schedule.update({
+                    where: {
+                        id: newCurrentSchedule.id
+                    },
+                    data: {
+                        current: true
+                    }
+                })
+            }
+        }
 
         revalidatePath('/home/schedules')
         return { success: 'Schedule deleted!' }
