@@ -14,7 +14,7 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
             NOT: {
                 OR: [
                     {
-                        FriendshipRequest: {
+                        friendRequests: {
                             some: {
                                 userId: userId
                             }
@@ -22,21 +22,28 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
                     }
                 ]
             },
-            AND: [
-                {
-                    NOT: [
-                        { friends: { some: { friendId: userId } } },
-                        { Friendship: { some: { friendId: userId } } }
-                    ]
-                },
-                {
-                    NOT: [
-                        { friends: { some: { userId } } },
-                        { Friendship: { some: { userId } } }
-                    ]
+            friends: {
+                every: {
+                    friendId: {
+                        not: userId
+                    }
                 }
-            ]
+            },
+            friendships: {
+                every: {
+                    userId: {
+                        not: userId
+                    }
+                }
+            }
         },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true
+        },
+
         take,
         skip
     })
@@ -46,6 +53,9 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
 
 export type UserType = Pick<User, 'id' | 'name' | 'email' | 'image'> & {
     friends?: {
+        id: string
+    }[]
+    friendships?: {
         id: string
     }[]
 }
@@ -68,6 +78,21 @@ export const searchUsers = async (query: string, userId: string) => {
             email: true,
             image: true,
             friends: {
+                select: {
+                    id: true
+                },
+                where: {
+                    OR: [
+                        {
+                            friendId: userId
+                        },
+                        {
+                            userId: userId
+                        }
+                    ]
+                }
+            },
+            friendships: {
                 select: {
                     id: true
                 },

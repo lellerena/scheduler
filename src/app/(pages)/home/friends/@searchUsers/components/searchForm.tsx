@@ -50,8 +50,13 @@ export function Searchform() {
                     <SectionGrid>
                         {search.map((user) => {
                             if (!user) return null
+                            console.log(user.friends, user.friendships)
 
-                            if (user.friends && user.friends?.length > 0)
+                            if (
+                                (user.friends && user.friends?.length > 0) ||
+                                (user.friendships &&
+                                    user.friendships?.length > 0)
+                            )
                                 return (
                                     <FriendCard
                                         userId={userId!}
