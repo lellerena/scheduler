@@ -30,7 +30,7 @@ export function Buttons({ requestId }: ButtonsProps) {
             router.push(path)
         } catch (error: any) {
             console.log(error)
-            toast.error(error.error)
+            toast.error(error.message)
         } finally {
             setLoading(false)
         }
