@@ -31,7 +31,9 @@ export default function AddFriendButton({
             }
             toast.success(res.success!)
             revalidatePath(path)
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error.message)
         } finally {
             setLoading(false)
         }

@@ -10,6 +10,7 @@ import { searchUsersSchema } from '@/schemas'
 import toast from 'react-hot-toast'
 import { UserType, searchUsers } from '@/data/users/users'
 import { useCurrentUser } from '@/hooks/use-current-user'
+import { FriendCard } from '../../components/friendCard'
 
 export function Searchform() {
     const [search, setSearch] = useState<UserType[]>([])
@@ -21,7 +22,7 @@ export function Searchform() {
         try {
             setLoading(true)
             // delay
-            const res = await searchUsers(values.query)
+            const res = await searchUsers(values.query, userId!)
             if (!res || res.error) {
                 throw new Error(res.error || 'Error, please try again later.')
             }
@@ -47,13 +48,26 @@ export function Searchform() {
             {hasSearched ? (
                 <>
                     <SectionGrid>
-                        {search.map((user) => (
-                            <UserCard
-                                originId={userId!}
-                                key={user.id}
-                                user={user}
-                            />
-                        ))}
+                        {search.map((user) => {
+                            if (!user) return null
+
+                            if (user.friends && user.friends?.length > 0)
+                                return (
+                                    <FriendCard
+                                        userId={userId!}
+                                        key={user.id}
+                                        friend={user}
+                                    />
+                                )
+
+                            return (
+                                <UserCard
+                                    key={user.id}
+                                    user={user}
+                                    originId={userId!}
+                                />
+                            )
+                        })}
                         {search.length == 0 && (
                             <p className="text-center">No results found</p>
                         )}
