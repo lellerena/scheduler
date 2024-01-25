@@ -122,3 +122,35 @@ export async function declineFriendRequest(friendRequstId: string) {
         return { error: 'Error declining friend request!' }
     }
 }
+
+export async function removeFriend(friendId: string, userId: string) {
+    try {
+        const friendship = await db.friendship.findFirst({
+            where: {
+                OR: [
+                    { userId: userId, friendId: friendId },
+                    { userId: friendId, friendId: userId }
+                ]
+            }
+        })
+
+        if (!friendship) {
+            return { error: 'No friendship found!' }
+        }
+        console.log('hola')
+        console.log({ friendId })
+
+        await db.friendship.delete({
+            where: {
+                id: friendship.id
+            }
+        })
+
+        revalidatePath(friendsPath)
+
+        return { success: 'Friend removed!' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error removing friend!' }
+    }
+}
