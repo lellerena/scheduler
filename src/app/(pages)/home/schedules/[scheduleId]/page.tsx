@@ -1,6 +1,6 @@
 import { Subject, getScheduleById } from '@/data/schedules/schedules'
 import { ScheduleIdClient } from './components/client'
-import { ScheduleIdColumn } from './components/columns'
+import { ScheduleIdColumn } from '../../../../../components/schedule/schedule-columns'
 import NewSchedule from './components/newSchedule'
 import { colors, days, hours } from '@/lib/schedule.constants'
 import { redirect } from 'next/navigation'

@@ -4,11 +4,14 @@ import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
-import { ScheduleTable } from './schedule-table'
+import { ScheduleTable } from '@/components/schedule/schedule-table'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 
-import { ScheduleIdColumn, columns } from './columns'
+import {
+    ScheduleIdColumn,
+    scheduleColumns
+} from '@/components/schedule/schedule-columns'
 import { schedule } from '@/data/schedules/schedules'
 import { Schedule } from '@prisma/client'
 
@@ -37,7 +40,7 @@ export const ScheduleIdClient: React.FC<ScheduleClientProps> = ({
             <Separator />
             <ScheduleTable
                 searchKey="name"
-                columns={columns}
+                columns={scheduleColumns}
                 data={tableData}
                 pageSize={15}
             />

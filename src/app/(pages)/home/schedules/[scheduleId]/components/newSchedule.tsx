@@ -8,8 +8,11 @@ import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
-import { ScheduleIdColumn, columns } from './columns'
-import { ScheduleTable } from './schedule-table'
+import {
+    ScheduleIdColumn,
+    scheduleColumns
+} from '../../../../../../components/schedule/schedule-columns'
+import { ScheduleTable } from '../../../../../../components/schedule/schedule-table'
 import { newScheduleSchema } from '@/schemas'
 import { useEffect, useState } from 'react'
 import {
@@ -196,7 +199,11 @@ export default function NewSchedule({ schedule }: { schedule: string }) {
                 </div>
 
                 <Separator />
-                <ScheduleTable searchKey="" columns={columns} data={data} />
+                <ScheduleTable
+                    searchKey=""
+                    columns={scheduleColumns}
+                    data={data}
+                />
             </div>
         </>
     )

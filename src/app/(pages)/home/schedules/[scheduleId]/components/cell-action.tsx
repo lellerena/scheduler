@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { AlertModal } from '@/components/modals/alert-modal'
 
-import { ScheduleIdColumn } from './columns'
+import { ScheduleIdColumn } from '../../../../../../components/schedule/schedule-columns'
 
 interface CellActionProps {
     data: ScheduleIdColumn
