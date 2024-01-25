@@ -34,8 +34,33 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
-  Friendship            Friendship[]
-  FriendshipRequest     FriendshipRequest[]
+  friendships            Friendship[]
+  friendshipRequests     FriendshipRequest[]
+}
+
+
+model Friendship {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  friendId  String   @db.ObjectId
+  friend    User     @relation(name: "friendWith", fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
+}
+
+model FriendshipRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(name: "friendRequestFrom", fields: [userId], references: [id], onDelete: Cascade)
+  friendId  String   @db.ObjectId
+  friend    User     @relation(fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
 }
 
 model Account {
@@ -123,27 +148,3 @@ model Draft {
   @@unique([userId])
 }
 
-// implement friendships
-model Friendship {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  friendId  String   @db.ObjectId
-  friend    User     @relation(name: "friendWith", fields: [friendId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, friendId])
-}
-
-model FriendshipRequest {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  user      User     @relation(name: "friendRequestFrom", fields: [userId], references: [id], onDelete: Cascade)
-  friendId  String   @db.ObjectId
-  friend    User     @relation(fields: [friendId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, friendId])
-}
