@@ -44,10 +44,14 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
     return users
 }
 
-export type UserType = Pick<User, 'id' | 'name' | 'email' | 'image'>
+export type UserType = Pick<User, 'id' | 'name' | 'email' | 'image'> & {
+    friends?: {
+        id: string
+    }[]
+}
 
-export const searchUsers = async (query: string) => {
-    const users = (await db.user.findMany({
+export const searchUsers = async (query: string, userId: string) => {
+    const users = await db.user.findMany({
         where: {
             OR: [
                 {
@@ -62,9 +66,24 @@ export const searchUsers = async (query: string) => {
             id: true,
             name: true,
             email: true,
-            image: true
+            image: true,
+            friends: {
+                select: {
+                    id: true
+                },
+                where: {
+                    OR: [
+                        {
+                            friendId: userId
+                        },
+                        {
+                            userId: userId
+                        }
+                    ]
+                }
+            }
         }
-    })) as UserType[]
+    })
 
     if (!users || users.length === 0) {
         return { error: 'No users found' }
