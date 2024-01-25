@@ -5,9 +5,11 @@ import { getSchedulesByUserId } from '@/data/schedules/schedules'
 import { Heading } from '@/components/ui/heading'
 import ImporScheduleButton from '@/components/import-schedule-button'
 import { Separator } from '@/components/ui/separator'
+import { currentUser } from '@/lib/auth'
 
-const MySchedulesPage = async ({ params }: { params: { storeId: string } }) => {
-    const Schedules = await getSchedulesByUserId(params.storeId)
+const MySchedulesPage = async () => {
+    const user = await currentUser()
+    const Schedules = await getSchedulesByUserId(user.id)
 
     const formattedSchedules: ScheduleColumn[] = Schedules.map((item) => {
         return {
