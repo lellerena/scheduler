@@ -11,6 +11,9 @@ export const getSchedulesByUserId = async (
     return await db.schedule.findMany({
         where: {
             userId
+        },
+        orderBy: {
+            period: 'desc'
         }
     })
 }
@@ -31,6 +34,21 @@ export const getScheduleById = async (scheduleId: string) => {
     }
 
     return schedule
+}
+
+export const getCurrentScheduleByUserId = async (userId: string) => {
+    const rawSchedule = await db.schedule.findFirst({
+        where: {
+            userId,
+            current: true
+        }
+    })
+
+    if (!rawSchedule) {
+        return null
+    }
+
+    return rawSchedule
 }
 
 export interface Subject {

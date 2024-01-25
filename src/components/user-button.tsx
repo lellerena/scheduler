@@ -13,6 +13,7 @@ import { useCurrentUser } from '@/hooks/use-current-user'
 import { LogoutButton } from '@/components/auth/logout-button'
 import { User2 } from 'lucide-react'
 import UserIcon from './ui/icons/UserIcon'
+import Link from 'next/link'
 
 export const UserButton = () => {
     const user = useCurrentUser()
@@ -32,6 +33,13 @@ export const UserButton = () => {
                     <User2 />
                     <strong>{user?.name}</strong>
                 </DropdownMenuItem>
+                <Link href="/home/profile">
+                    <DropdownMenuItem>
+                        <UserIcon className="h-4 w-4 mr-2" />
+                        <strong>My Profile</strong>
+                    </DropdownMenuItem>
+                </Link>
+
                 <LogoutButton>
                     <DropdownMenuItem>
                         <ExitIcon className="h-4 w-4 mr-2" />
