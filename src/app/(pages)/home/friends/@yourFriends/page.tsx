@@ -4,6 +4,7 @@ import { delay } from '@/lib/utils'
 import UserCard from './components/UserCard'
 import { getFriends } from '@/data/users/friends'
 import { currentUser } from '@/lib/auth'
+import { FriendCard } from '../components/friendCard'
 
 export default async function YourFriendsFragment() {
     const userId = (await currentUser()).id
@@ -20,7 +21,11 @@ export default async function YourFriendsFragment() {
             <SectionTitle>Your Friends</SectionTitle>
             <SectionGrid>
                 {data.map((friend) => (
-                    <UserCard key={friend.id} friend={friend} />
+                    <FriendCard
+                        key={friend.id}
+                        userId={userId}
+                        friend={friend}
+                    />
                 ))}
                 {data.length == 0 && (
                     <div className="text-center col-span-full ">

@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-
 import { ScheduleColumn } from './components/columns'
 import { SchedulesClient } from './components/client'
 
