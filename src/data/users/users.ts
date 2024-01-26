@@ -58,6 +58,7 @@ export type UserType = Pick<User, 'id' | 'name' | 'email' | 'image'> & {
     friendships?: {
         id: string
     }[]
+    description?: string
 }
 
 export const searchUsers = async (query: string, userId: string) => {
@@ -115,4 +116,25 @@ export const searchUsers = async (query: string, userId: string) => {
     }
 
     return { success: 'Users found', data: users }
+}
+
+export const getUserById = async (userId: string) => {
+    const user = await db.user.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            description: true
+        }
+    })
+
+    if (!user) {
+        return { error: 'User not found' }
+    }
+
+    return { success: 'User found', data: user }
 }

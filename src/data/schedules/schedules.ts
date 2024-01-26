@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { Schedule } from '@prisma/client'
+import { Schedule, ScheduleVisibility } from '@prisma/client'
 
 export interface schedule extends Schedule {}
 
@@ -49,6 +49,36 @@ export const getCurrentScheduleByUserId = async (userId: string) => {
     }
 
     return rawSchedule
+}
+
+export const getAnotherPersonCurrentSchedule = async (
+    userId: string,
+    requestantId: string
+) => {
+    const schedule = await getCurrentScheduleByUserId(userId)
+    if (!schedule) {
+        return null
+    }
+
+    if (schedule.visibility === ScheduleVisibility.PUBLIC) {
+        return schedule
+    }
+
+    // check if they are friends
+    const areFriends = await db.friendship.findFirst({
+        where: {
+            OR: [
+                { userId, friendId: requestantId },
+                { userId: requestantId, friendId: userId }
+            ]
+        }
+    })
+
+    if (areFriends) {
+        return schedule
+    }
+
+    return null
 }
 
 export interface Subject {

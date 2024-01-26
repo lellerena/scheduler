@@ -40,16 +40,14 @@ export default function AddFriendButton({
     }, [destinationId, originId, path])
 
     return (
-        <div className="flex justify-end mt-2">
-            <Button
-                onClick={handleClik}
-                disabled={loading}
-                size="sm"
-                className="flex gap-2"
-            >
-                <UserPlusIcon className="h-4 w-4" />
-                Add Friend
-            </Button>
-        </div>
+        <Button
+            onClick={handleClik}
+            disabled={loading}
+            size="sm"
+            className="flex gap-2"
+        >
+            <UserPlusIcon className="h-4 w-4" />
+            Add Friend
+        </Button>
     )
 }
