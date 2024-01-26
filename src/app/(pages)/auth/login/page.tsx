@@ -9,13 +9,14 @@ import { LoginSchema } from '@/schemas'
 import { Form } from '@/components/ui/form'
 import { Field } from '@/components/field'
 import { useState, useTransition } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { login } from '@/actions/auth/login'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 import { SignButton } from '@/components/SignButton'
 
 export default function LoginPage() {
+    const router = useRouter()
     const searchParams = useSearchParams()
     const callbackUrl = searchParams.get('callbackUrl')
     const urlError =
@@ -52,6 +53,8 @@ export default function LoginPage() {
                     if (data?.success) {
                         form.reset()
                         setSuccess(data.success)
+                        router.refresh()
+                        router.push(callbackUrl || '/home')
                     }
 
                     if (data?.twoFactor) {

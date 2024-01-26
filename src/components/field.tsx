@@ -72,6 +72,7 @@ export function Field({
                                         type={type}
                                         {...field}
                                         disabled={isPending}
+                                        className="text-white/80"
                                     />
                                 </label>
                             )}

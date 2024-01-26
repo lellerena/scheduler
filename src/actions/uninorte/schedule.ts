@@ -4,12 +4,12 @@ import * as z from 'zod'
 
 import { importNewScheduleSchema, newScheduleSchema } from '@/schemas'
 import { colors, days, hours } from '@/lib/schedule.constants'
-import { ScheduleIdColumn } from '@/app/(pages)/home/schedules/[scheduleId]/components/columns'
 import { Subject } from '@/data/schedules/schedules'
 import { db } from '@/lib/db'
 import { deleteDraft, writeDraft } from '../draft/draft'
 import { ScheduleVisibility } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { ScheduleIdColumn } from '@/components/schedule/schedule-columns'
 
 const SCHEDULE_LINK =
     'https://e3pc8k5p2g.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/schedule'

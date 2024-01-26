@@ -190,7 +190,7 @@ export default function NewSchedule({ schedule }: { schedule: string }) {
                                 />
                             </div>
                             <div className="flex mt-4">
-                                <Button type="submit">
+                                <Button disabled={loading} type="submit">
                                     <Save className="mr-2 h-4 w-4" /> Save
                                 </Button>
                             </div>

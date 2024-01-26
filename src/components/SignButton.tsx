@@ -39,11 +39,11 @@ export function SignButton({ source, className, ...props }: Props) {
 
     const handleClick = () => {
         if (source === 'google') {
-            signIn('google', { callbackUrl: '/' })
+            signIn('google', { callbackUrl: '/home' })
         }
 
         if (source === 'twitter') {
-            signIn('twitter', { callbackUrl: '/' })
+            signIn('twitter', { callbackUrl: '/home' })
         }
     }
 

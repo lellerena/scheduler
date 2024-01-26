@@ -14,27 +14,27 @@ export const getSuggestedUsers = async (userId: string, page: number = 1) => {
             NOT: {
                 OR: [
                     {
-                        friendRequests: {
+                        friendshipRequests: {
+                            some: {
+                                userId: userId
+                            }
+                        }
+                    },
+                    {
+                        friends: {
+                            some: {
+                                userId: userId
+                            }
+                        }
+                    },
+                    {
+                        friendships: {
                             some: {
                                 userId: userId
                             }
                         }
                     }
                 ]
-            },
-            friends: {
-                every: {
-                    friendId: {
-                        not: userId
-                    }
-                }
-            },
-            friendships: {
-                every: {
-                    userId: {
-                        not: userId
-                    }
-                }
             }
         },
         select: {
