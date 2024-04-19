@@ -4,7 +4,7 @@ import * as z from 'zod'
 
 import { newScheduleUnLoginSchema } from '@/schemas'
 const Login_URL =
-    'https://e3pc8k5p2g.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/login'
+    'https://ri7bptmuz0.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/login'
 
 export const unLogin = async (
     values: z.infer<typeof newScheduleUnLoginSchema>

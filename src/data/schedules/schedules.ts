@@ -41,12 +41,22 @@ export const getCurrentScheduleByUserId = async (userId: string) => {
         where: {
             userId,
             current: true
+        },
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    image: true
+                }
+            }
         }
     })
 
     if (!rawSchedule) {
         return null
     }
+
+    console.log(JSON.stringify(rawSchedule))
 
     return rawSchedule
 }

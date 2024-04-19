@@ -1,15 +1,19 @@
 # Scheduler
 
+## Project Status
+
+This project is currently in development. Functionality is partially implemented and ongoing.
+
 ## Description
 
 Scheduler is a web application built with React and TypeScript, using Next.js as the framework. It allows you to share your schedule with friends, groups, and create conflict matrices. This way, you can easily find out when everyone is free. You can also import your schedule directly from the Uninorte university page and compare your schedules with your friends.
 
 ## Features
 
-- Import schedule from Uninorte university page
-- Share your schedule with friends and groups
-- Create conflict matrices to find out when everyone is free
-- Compare your schedule with your friends
+-   Import schedule from Uninorte university page
+-   Share your schedule with friends and groups
+-   Create conflict matrices to find out when everyone is free
+-   Compare your schedule with your friends
 
 ## Installation
 
@@ -50,3 +54,42 @@ npm run start
 ## Contributing
 
 Contributions are always welcome! Feel free to open an issue or submit a pull request.
+
+## Project Preview
+
+### Home Page
+
+![Home Page](./public/home-page.png)
+
+### Login
+
+![Login Page](./public/login-page.png)
+
+### Logged Home Page
+
+![Home Page](./public/home2-page.png)
+
+### Profile Page
+
+![Profile Page](./public/profile-page.png)
+
+### Schedules Page
+
+![Schedules Page](./public/schedules-page.png)
+
+### Import Page
+
+![Import Page](./public/import-page.png)
+![Import Page 2](./public/import2-page.png)
+
+### Draft Page
+
+![Draft Page](./public/draft-page.png)
+
+### Friends Page
+
+![Friends Page](./public/friends-page.png)
+
+### Schedule Comparison Page
+
+![Schedule Comparison Page](./public/conflict-page.png)

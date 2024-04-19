@@ -12,7 +12,7 @@ import { revalidatePath } from 'next/cache'
 import { ScheduleIdColumn } from '@/components/schedule/schedule-columns'
 
 const SCHEDULE_LINK =
-    'https://e3pc8k5p2g.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/schedule'
+    'https://ri7bptmuz0.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/schedule'
 // ?termId=202410
 
 export const getUnSchedule = async (

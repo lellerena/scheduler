@@ -11,8 +11,8 @@ import { Separator } from '@/components/ui/separator'
 import {
     ScheduleIdColumn,
     scheduleColumns
-} from '../../../../../../components/schedule/schedule-columns'
-import { ScheduleTable } from '../../../../../../components/schedule/schedule-table'
+} from '@/components/schedule/schedule-columns'
+import { ScheduleTable } from '@/components/schedule/schedule-table'
 import { newScheduleSchema } from '@/schemas'
 import { useEffect, useState } from 'react'
 import {
