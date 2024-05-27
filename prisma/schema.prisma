@@ -45,6 +45,7 @@ model User {
 model Group {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  image          String?
   description String?
   adminId     String  @db.ObjectId
   admin       User    @relation(name: "admin", fields: [adminId], references: [id])

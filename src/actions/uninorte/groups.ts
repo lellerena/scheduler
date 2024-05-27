@@ -2,6 +2,24 @@
 
 import { db } from '@/lib/db'
 
+export async function createGroup(name: string, description: string, adminId: string, imageUrl?: string) {
+    try {
+        // Crear el grupo
+        const newGroup = await db.group.create({
+            data: {
+                name: name,
+                description: description,
+                adminId: adminId,
+                image: imageUrl
+            }
+        })
+
+        return { success: 'Group created successfully!', data: newGroup }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error creating group!' }
+    }
+}
 
 export async function sendGroupInvitation(groupId: string, destinyId: string) {
     try {
@@ -88,6 +106,7 @@ export async function acceptGroupInvitation(invitationId: string) {
 }
 
 
+
 export async function declineGroupInvitation(invitationId: string) {
     try {
         
@@ -118,6 +137,119 @@ export async function declineGroupInvitation(invitationId: string) {
     }
 }
 
+export async function requestGroupJoin(userId: string, groupId: string) {
+    try {
+        // Verificar si el usuario ya es miembro del grupo
+        const membership = await db.groupMembership.findFirst({
+            where: {
+                userId: userId,
+                groupId: groupId
+            }
+        })
+
+        if (membership) {
+            return { error: 'The user is already a member of this group!' }
+        }
+
+        // Verificar si el usuario ya tiene una solicitud pendiente para unirse al grupo
+        const existingRequest = await db.groupJoinRequest.findFirst({
+            where: {
+                userId: userId,
+                groupId: groupId,
+                status: 'PENDING'
+            }
+        })
+
+        if (existingRequest) {
+            return { error: 'The user already has a pending join request for this group!' }
+        }
+
+        // Crear solicitud de unión al grupo
+        await db.groupJoinRequest.create({
+            data: {
+                userId: userId,
+                groupId: groupId
+            }
+        })
+
+        return { success: 'Group join request sent!' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error sending group join request!' }
+    }
+}
+
+export async function acceptGroupJoinRequest(requestId: string) {
+    try {
+        // Buscar la solicitud de unión al grupo
+        const groupJoinRequest = await db.groupJoinRequest.findFirst({
+            where: {
+                id: requestId
+            }
+        })
+
+        if (!groupJoinRequest) {
+            return { error: 'No group join request found!' }
+        }
+
+        const userId = groupJoinRequest.userId
+        const groupId = groupJoinRequest.groupId
+
+
+        await db.groupJoinRequest.update({
+            where: {
+                id: requestId
+            },
+            data: {
+                status: 'ACCEPTED'
+            }
+        })
+
+        // Agregar al usuario como miembro del grupo
+        await db.groupMembership.create({
+            data: {
+                userId: userId,
+                groupId: groupId
+            }
+        })
+
+        return { success: 'Group join request accepted!' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error accepting group join request!' }
+    }
+}
+
+export async function declineGroupJoinRequest(requestId: string) {
+    try {
+        // Buscar la solicitud de unión al grupo
+        const groupJoinRequest = await db.groupJoinRequest.findFirst({
+            where: {
+                id: requestId
+            }
+        })
+
+        if (!groupJoinRequest) {
+            return { error: 'No group join request found!' }
+        }
+
+        // Eliminar la solicitud de unión al grupo
+        // Update status to "REJECTED"
+        await db.groupJoinRequest.update({
+            where: {
+                id: requestId
+            },
+            data: {
+                status: 'REJECTED'
+            }
+        })
+
+        return { success: 'Group join request declined!' }
+    } catch (err) {
+        console.log(err)
+        return { error: 'Error declining group join request!' }
+    }
+}
 
 export async function leaveGroup(userId: string, groupId: string) {
     try {
