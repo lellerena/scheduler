@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 
-export async function createGroup(name: string, description: string, adminId: string, imageUrl?: string) {
+export async function createGroup(name: string, description: string, adminId: string, visibility: 'PUBLIC' | 'PRIVATE', imageUrl?: string) {
     try {
         // Crear el grupo
         const newGroup = await db.group.create({
@@ -10,7 +10,15 @@ export async function createGroup(name: string, description: string, adminId: st
                 name: name,
                 description: description,
                 adminId: adminId,
+                visibility: visibility,
                 image: imageUrl
+            }
+        })
+
+        await db.groupMembership.create({
+            data: {
+                userId: adminId,
+                groupId: newGroup.id
             }
         })
 
@@ -21,6 +29,7 @@ export async function createGroup(name: string, description: string, adminId: st
     }
 }
 
+//Enviar invitación a un usuario para que se una a un grupo
 export async function sendGroupInvitation(groupId: string, destinyId: string) {
     try {
         // check if the user is already in the group
@@ -63,7 +72,7 @@ export async function sendGroupInvitation(groupId: string, destinyId: string) {
     }
 }
 
-
+//Usuario acepta invitación para unirse a un grupo
 export async function acceptGroupInvitation(invitationId: string) {
     try {
         // Search invitation
@@ -106,7 +115,7 @@ export async function acceptGroupInvitation(invitationId: string) {
 }
 
 
-
+//Usuario rechaza invitación para unirse a un grupo
 export async function declineGroupInvitation(invitationId: string) {
     try {
         
@@ -137,6 +146,7 @@ export async function declineGroupInvitation(invitationId: string) {
     }
 }
 
+//Usuario solicita unirse a un grupo
 export async function requestGroupJoin(userId: string, groupId: string) {
     try {
         // Verificar si el usuario ya es miembro del grupo
@@ -179,6 +189,7 @@ export async function requestGroupJoin(userId: string, groupId: string) {
     }
 }
 
+//Grupo acepta que un usuario entre
 export async function acceptGroupJoinRequest(requestId: string) {
     try {
         // Buscar la solicitud de unión al grupo
@@ -220,6 +231,7 @@ export async function acceptGroupJoinRequest(requestId: string) {
     }
 }
 
+//Grupo rechaza que un usuario entre
 export async function declineGroupJoinRequest(requestId: string) {
     try {
         // Buscar la solicitud de unión al grupo
@@ -251,6 +263,8 @@ export async function declineGroupJoinRequest(requestId: string) {
     }
 }
 
+
+//Usuario abandona el grupo
 export async function leaveGroup(userId: string, groupId: string) {
     try {
         
