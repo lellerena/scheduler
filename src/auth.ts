@@ -72,6 +72,7 @@ export const {
                 session.user.email = token.email
                 session.user.isOAuth = token.isOAuth as boolean
                 session.user.description = token.description as string
+                session.user.id = token.id as string
             }
 
             return session
@@ -91,11 +92,13 @@ export const {
             token.role = existingUser.role
             token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled
             token.description = existingUser.description
+            token.id = existingUser.id
 
             return token
         }
     },
-    // adapter: PrismaAdapter(db),
+    // @ts-ignore
+    adapter: PrismaAdapter(db),
     session: { strategy: 'jwt' },
     ...authConfig
 })
