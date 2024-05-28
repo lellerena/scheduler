@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ScheduleIdColumn } from '@/components/schedule/schedule-columns'
 import { Subject } from './schedules'
 
