@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Section } from './Section';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { leaveGroup } from '@/actions/uninorte/groups';
-import { Modal } from '@/components/ui/modal';
-import { Searchform } from './searchForm';
+import { leaveGroup, requestGroupJoin } from '@/actions/uninorte/groups';
 
 interface grp {
 	id: string;
@@ -61,44 +59,13 @@ export default function Menu({
 						</div>
 						<p className="my-[10px]">{grp.description}</p>
 					</div>
-					<div className="flex h-1/5 justify-around">
-						{userID == grp.adminId ? (
-							<Button
-								className="transition-all hover:bg-red-600 hover:text-white"
-								onClick={() => {
-									// deleteGroup(grp.id);
-									onClose();
-								}}
-							>
-								Delete
-							</Button>
-						) : (
-							<Button
-								className="transition-all hover:bg-red-600 hover:text-white"
-								onClick={() => {
-									leaveGroup(userID, grp.id);
-									onClose();
-								}}
-							>
-								Leave group
-							</Button>
-						)}
-						<Button onClick={() => setModalOpen(true)}>
-							Invite
+					<div className="flex h-1/5 justify-center">
+						<Button onClick={() => requestGroupJoin(userID, grp.id)}>
+							Send Request
 						</Button>
 					</div>
 				</div>
 			</Section>
-			<Modal
-				description=""
-				isOpen={modalOpen}
-				onClose={() => setModalOpen(false)}
-				title="Invite Friend"
-			>
-				<div>
-					<Searchform groupID={grp.id} />
-				</div>
-			</Modal>
 		</>
 	);
 }

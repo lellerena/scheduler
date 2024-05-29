@@ -27,6 +27,7 @@ export const FriendCard = ({ groupId, friend }: FriendCardProps) => {
 				<Button onClick={() => sendGroupInvitation(groupId, friend.id)}>
 					<UserCheck className='mr-[5px]'/>
 					Invite Friend
+					
 				</Button>
 			</div>
 		</div>
