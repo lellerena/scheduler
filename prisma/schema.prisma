@@ -47,6 +47,7 @@ model Group {
   name        String
   image          String?
   description String?
+  visibility ScheduleVisibility @default(PRIVATE)
   adminId     String  @db.ObjectId
   admin       User    @relation(name: "admin", fields: [adminId], references: [id])
   groupMemberships GroupMembership[]
